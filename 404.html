@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 · WORLD NOT FOUND</title>
+<script>
+  // 404 pages are served from whatever path was requested; point relative URLs back at the site root
+  // (on a GitHub Pages project site that root is /<repo>/).
+  (function () {
+    var segs = location.pathname.split('/').filter(Boolean);
+    var root = /\.github\.io$/.test(location.hostname) && segs.length ? '/' + segs[0] + '/' : '/';
+    document.write('<base href="' + root + '">');
+  })();
+</script>
+<style>
+  @font-face { font-family: 'Jersey 10'; src: url(fonts/jersey10.woff2) format('woff2'); }
+  @font-face { font-family: 'Silkscreen'; src: url(fonts/silkscreen-400.woff2) format('woff2'); }
+  html, body { margin: 0; height: 100%; }
+  body { display: grid; place-items: center; background: #07031a; color: #f4ecff; font-family: 'Silkscreen', monospace; text-align: center; -webkit-font-smoothing: none;
+    background-image: linear-gradient(rgba(125,255,90,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(125,255,90,.07) 1px, transparent 1px); background-size: 32px 32px; }
+  h1 { margin: 0; font: 160px/0.9 'Jersey 10', monospace; color: #7dff5a; text-shadow: 0 0 24px rgba(125,255,90,.5), 6px 6px 0 #0a0618; }
+  p { margin: 18px 0 0; color: #c3b2f2; font-size: 16px; line-height: 1.8; }
+  a { display: inline-block; margin-top: 32px; padding: 12px 20px; color: #0a0618; background: #ffd93b; text-decoration: none;
+    box-shadow: 0 -4px 0 0 #fff2a8, 0 4px 0 0 #fff2a8, -4px 0 0 0 #fff2a8, 4px 0 0 0 #fff2a8, 0 8px 0 0 #0a0618; }
+  a:focus-visible { outline: 4px dashed #29f3ff; outline-offset: 6px; }
+  .blink { animation: b 1s steps(1) infinite; } @keyframes b { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
+</style>
+</head>
+<body>
+  <main>
+    <h1>404</h1>
+    <p>WORLD NOT FOUND<br>这一关还没造好</p>
+    <p class="blink">CONTINUE?</p>
+    <a href="./">Back to the city · 回到城市</a>
+  </main>
+</body>
+</html>

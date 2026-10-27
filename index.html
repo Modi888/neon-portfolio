@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EDDIE.EXE · NEON-8</title>
+  <meta name="description" content="Eddie's portfolio: an explorable 8-bit neon city. Websites, apps, internships, upcoming sites and games.">
+  <meta name="theme-color" content="#120936">
+  <meta property="og:title" content="EDDIE.EXE · NEON-8">
+  <meta property="og:description" content="An explorable 8-bit neon city. Every building is a project.">
+  <link rel="preload" href="fonts/fusion-pixel-12px.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=20261027j">
+</head>
+<body data-screen="power">
+  <noscript><p class="noscript">This portfolio is a small 8-bit game and needs JavaScript. 这个作品集是一个 8-bit 小游戏，需要开启 JavaScript。</p></noscript>
+
+  <div id="app">
+    <section id="scr-power" class="scr" aria-label="Power"></section>
+    <section id="scr-boot" class="scr" hidden aria-label="Boot"></section>
+    <section id="scr-title" class="scr" hidden aria-label="Title"></section>
+
+    <section id="scr-world" class="scr" hidden aria-label="NEON-8 city">
+      <header class="hud" id="hud"></header>
+      <div class="stage" id="stage">
+        <canvas id="city" tabindex="0" aria-label="The city. Use arrow keys to walk, up to enter buildings. Press L for a text version."></canvas>
+        <div id="bubbles" aria-hidden="true"></div>
+        <div class="banner" id="banner" aria-hidden="true"></div>
+        <div class="job" id="job" role="status" hidden></div>
+      </div>
+      <div class="prompt" id="prompt" aria-hidden="true"></div>
+      <div class="pad" id="pad" aria-label="Touch controls">
+        <div class="pad-dir">
+          <button class="pad-btn pad-l" data-pad="left" aria-label="Walk left"><span aria-hidden="true">◀</span></button>
+          <button class="pad-btn pad-r" data-pad="right" aria-label="Walk right"><span aria-hidden="true">▶</span></button>
+        </div>
+        <div class="pad-brand" aria-hidden="true">NEON BOY<small>COLOR</small></div>
+        <div class="pad-ab">
+          <button class="pad-btn pad-b" data-pad="act" aria-label="Enter or talk"><span>B</span></button>
+          <button class="pad-btn pad-a" data-pad="jump" aria-label="Jump"><span>A</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="scr-list" class="scr" hidden aria-label="Quick view"></section>
+  </div>
+
+  <div id="layer"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div class="crt" aria-hidden="true"></div>
+  <div class="crt-power" aria-hidden="true"></div>
+  <div id="sr" class="sr-only" aria-live="polite"></div>
+
+  <!-- 内容在 js/data.js 里编辑 · edit your content in js/data.js -->
+  <script src="js/data.js?v=20261027j"></script>
+  <script src="js/core.js?v=20261027j"></script>
+  <script src="js/audio.js?v=20261027j"></script>
+  <script src="js/pixel.js?v=20261027j"></script>
+  <script src="js/sprites.js?v=20261027j"></script>
+  <script src="js/city-art.js?v=20261027j"></script>
+  <script src="js/achievements.js?v=20261027j"></script>
+  <script src="js/ui.js?v=20261027j"></script>
+  <script src="js/project.js?v=20261027j"></script>
+  <script src="js/list.js?v=20261027j"></script>
+  <script src="js/world.js?v=20261027j"></script>
+  <script src="js/title.js?v=20261027j"></script>
+  <script src="js/games/arcade.js?v=20261027j"></script>
+  <script src="js/games/commit.js?v=20261027j"></script>
+  <script src="js/games/hex.js?v=20261027j"></script>
+  <script src="js/games/snake.js?v=20261027j"></script>
+  <script src="js/games/breaker.js?v=20261027j"></script>
+  <script src="js/games/invaders.js?v=20261027j"></script>
+  <script src="js/fuse.js?v=20261027j"></script>
+  <script src="js/gacha.js?v=20261027j"></script>
+  <script src="js/terminal.js?v=20261027j"></script>
+  <script src="js/paint.js?v=20261027j"></script>
+  <script src="js/credits.js?v=20261027j"></script>
+  <script src="js/eggs.js?v=20261027j"></script>
+  <script src="js/main.js?v=20261027j"></script>
+</body>
+</html>

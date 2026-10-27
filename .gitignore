@@ -1,0 +1,6 @@
+# raw source material and local tooling stay off GitHub
+stuff-to-replace/
+_dev/
+HANDOFF.md
+.claude/
+.DS_Store
