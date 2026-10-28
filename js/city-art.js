@@ -545,7 +545,7 @@
     x.fillStyle = C.ink; x.fillRect(dx - 2, G - 32, 20, 32);
     x.fillStyle = '#2a5a4a'; x.fillRect(dx, G - 30, 16, 30); x.fillStyle = C.lime; x.fillRect(dx + 12, G - 15, 2, 2);
     const sign = neonBox('INDIE LAB', 'lime', { scale: 1 });
-    const pad = neonBox('PRESS F', 'magenta', { font: 3, padIn: 1 });
+    const pad = neonBox('PRESS ' + N.actKey(), 'magenta', { font: 3, padIn: 1 });
     dish(x, X + w - 30, Y); ac(x, X + 16, Y - 5);
     const beacon = antenna(x, X + w - 50, Y, 18);
     return {

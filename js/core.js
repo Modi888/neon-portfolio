@@ -256,7 +256,7 @@
       'byte.name': 'BYTE',
       'minus.title': 'WORLD -1',
       'minus.sub': 'You found the place where unfinished projects go.',
-      'minus.exit': 'Press ↑ at the pipe to go back',
+      'minus.exit': 'Press F at the pipe to go back',
       'term.title': 'EDDIE-OS terminal',
       'term.hint': 'Type help and press Enter.',
       'skip': 'Skip'
@@ -454,7 +454,11 @@
     VENDOR: { en: 'Noodle bot', zh: '拉面机器人' }, ROBOT: { en: 'Site bot', zh: '施工机器人' }, DEV: { en: 'Indie dev', zh: '独立开发者' }, MASTER: { en: 'Station master', zh: '站长' }
   };
   N.label = (k) => (N.LABELS[k] ? N.L(N.LABELS[k]) : k);
-  N.t = (k) => (N.STR[N.lang] && N.STR[N.lang][k] != null ? N.STR[N.lang][k] : (N.STR.en[k] != null ? N.STR.en[k] : k));
+  // the action key is F on a keyboard and the B button on the touch pad; copy is written with F
+  N.touch = () => !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+  N.actKey = () => N.touch() ? 'B' : 'F';
+  N.keyify = (s) => typeof s === 'string' && N.touch() ? s.replace(/\b(Press|PRESS) F\b/g, '$1 B').replace(/按 F/g, '按 B').replace(/\[F\]/g, '[B]') : s;
+  N.t = (k) => N.keyify(N.STR[N.lang] && N.STR[N.lang][k] != null ? N.STR[N.lang][k] : (N.STR.en[k] != null ? N.STR.en[k] : k));
 
   /* ---------------- helpers ---------------- */
   N.esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

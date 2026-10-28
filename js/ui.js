@@ -147,7 +147,9 @@
   /* ---------------- speech bubbles ---------------- */
   const bubbles = new Map();
   function say(line, who) {
-    const text = L(line);
+    // a line can carry a touch: { en, zh } version for the phone pad (no Space, Shift or M there)
+    if (line && line.touch && N.touch()) line = line.touch;
+    const text = N.keyify(L(line));
     if (!text) return;
     const key = who === 'byte' ? 'byte' : (who && who.kind) || 'npc';
     let b = bubbles.get(key);
@@ -283,8 +285,8 @@
   function setPrompt(p) {
     const el2 = $('#prompt'); if (!el2) return;
     if (!p) { el2.classList.remove('on'); return; }
-    const verb = t(p.key).replace(/^(Press F to |按 F )/, '');
-    el2.innerHTML = `<kbd>${isTouch() ? 'B' : 'F'}</kbd><span>${esc(verb)}</span>${p.label ? `<b>${esc(p.label)}</b>` : ''}`;
+    const verb = t(p.key).replace(/^(Press [FB] to |按 [FB] )/, '');
+    el2.innerHTML = `<kbd>${N.actKey()}</kbd><span>${esc(verb)}</span>${p.label ? `<b>${esc(p.label)}</b>` : ''}`;
     el2.classList.add('on');
   }
 
@@ -361,7 +363,7 @@
       body: `<ul class="keymap">
         ${row(['←', '→'], t('help.move'))}${row(['A', 'D'], t('help.move'))}
         ${row(['Shift'], t('help.run'))}${row(['Space', '↑'], t('help.jump'))}
-        ${row(['F'], t('help.enter'))}${row(['M'], t('help.map'))}
+        ${row([N.actKey()], t('help.enter'))}${row(['M'], t('help.map'))}
         ${row(['`'], t('help.term'))}${row(['Esc'], t('help.esc'))}
       </ul>
       <p class="help-note">${esc(t('help.click'))}</p>

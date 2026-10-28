@@ -62,7 +62,7 @@
   };
   const BYTE_LINES = {
     intro: { en: "Hi, I'm BYTE! Walk with ← →. Press F at any door to look inside.", zh: '嗨，我是 BYTE！用 ← → 走路，在门口按 F 就能进去看看。' },
-    jump: { en: 'Space jumps. Press it again in the air to double jump.', zh: '空格键跳跃，在空中再按一次可以二段跳。' },
+    jump: { en: 'Space jumps. Press it again in the air to double jump.', zh: '空格键跳跃，在空中再按一次可以二段跳。', touch: { en: 'A jumps. Press it again in the air to double jump.', zh: '按 A 跳跃，在空中再按一次可以二段跳。' } },
     web: { en: 'Web Street! Every shop here is a website or app Eddie built.', zh: '网站街到了！这里每家店都是 Eddie 做的网站或应用。' },
     corp: { en: "Megacorp Plaza. This is where Eddie's internships live.", zh: '巨企广场。Eddie 的实习经历都在这儿。' },
     arcade: { en: 'The arcade! Real games inside. Bring coins.', zh: '游戏厅！里面的游戏都能玩，记得带金币。' },
@@ -73,10 +73,10 @@
     radio: { en: 'Radio Hill. Change the music at the jukebox, or tag the wall.', zh: '电台坡。去点唱机换首歌，或者在墙上涂个鸦。' },
     station: { en: 'End of the line. The train takes you to the credits.', zh: '终点站。坐上列车就能看到片尾字幕。' },
     idle: [
-      { en: 'Press M for the map. It has fast travel.', zh: '按 M 打开地图，可以快速传送。' },
-      { en: 'You can also click a building and walk there automatically.', zh: '也可以直接点击建筑，自动走过去。' },
+      { en: 'Press M for the map. It has fast travel.', zh: '按 M 打开地图，可以快速传送。', touch: { en: 'Tap the map button up top. It has fast travel.', zh: '点上面的地图按钮，可以快速传送。' } },
+      { en: 'You can also click a building and walk there automatically.', zh: '也可以直接点击建筑，自动走过去。', touch: { en: 'You can also tap a building to walk there automatically.', zh: '也可以直接点建筑，自动走过去。' } },
       { en: 'Five cats live in this city. Have you met them?', zh: '这座城市住着五只猫，你都见过了吗？' },
-      { en: 'Press ` to open the terminal. Type help.', zh: '按 ` 键打开终端，输入 help 试试。' }
+      { en: 'Press ` to open the terminal. Type help.', zh: '按 ` 键打开终端，输入 help 试试。', touch: { en: 'The pause menu has a terminal. Type help.', zh: '暂停菜单里有个终端，输入 help 试试。' } }
     ],
     sign: { en: "My building's name sign is dead. Its fuse box is way out on Radio Hill. City wiring, don't ask.", zh: '我们楼的名字招牌坏了。配电箱在老远的电台坡，城市布线就是这么离谱。' },
     signOn: { en: 'Look up! Your name is shining again. Best repair job in the whole city.', zh: '抬头看！你的名字又亮起来了，全城最好的维修活儿。' },
@@ -97,7 +97,7 @@
   };
 
   const EATS = {
-    order: { en: 'Order up! Deliver to {who} in {s} seconds. Run with Shift!', zh: '来单了！{s} 秒内送到 {who}。按住 Shift 跑！' },
+    order: { en: 'Order up! Deliver to {who} in {s} seconds. Run with Shift!', zh: '来单了！{s} 秒内送到 {who}。按住 Shift 跑！', touch: { en: 'Order up! Deliver to {who} in {s} seconds. Hurry!', zh: '来单了！{s} 秒内送到 {who}。快跑！' } },
     busy: { en: 'Finish your current delivery first.', zh: '先把手上这单送完。' },
     late: { en: 'Too slow. The noodles went cold and the order was cancelled.', zh: '太慢了，面坨了，订单被取消。' },
     teleport: { en: "No teleporting with hot noodles. Soup everywhere.", zh: '端着热汤面可不能传送，会洒一地。' },
@@ -427,7 +427,8 @@
     const secs = Math.round(7 + dist / 140);
     job = { target, left: secs * 60, total: secs * 60, who: jobName(target) };
     N.Audio.sfx('ding');
-    const line = { en: EATS.order.en.replace('{who}', job.who).replace('{s}', secs), zh: EATS.order.zh.replace('{who}', job.who).replace('{s}', secs) };
+    const o = (N.touch() && EATS.order.touch) || EATS.order;
+    const line = { en: o.en.replace('{who}', job.who).replace('{s}', secs), zh: o.zh.replace('{who}', job.who).replace('{s}', secs) };
     N.UI.say(line, S.npcs.find(n => n.kind === 'vendor') || 'byte');
     emitJob(true);
   }
@@ -883,7 +884,7 @@
   function drawBlimp(x, t) {
     const bx = ((VW + 300) - ((t * 5 + cam.x * 0.06) % (VW + 500))) | 0, by = 22 + Math.sin(t * 0.5) * 2;
     x.drawImage(blimp.canvas, bx, by | 0);
-    const msg = N.DATA.profile.blimp || 'NEON-8';
+    const msg = N.keyify(N.DATA.profile.blimp || 'NEON-8');
     const tc = P.textCanvas(msg + '   ', C.yellow, { font: 3 });
     const sx = blimp.screen;
     x.save(); x.beginPath(); x.rect(bx + sx.x, (by | 0) + sx.y, sx.w, sx.h); x.clip();
@@ -1374,7 +1375,7 @@
     if (!activeTrig || (N.App && N.App.blocked())) return;
     const sx = Math.round(activeTrig.cx - cam.x), sy = Math.round(activeTrig.py + Math.sin(t * 6) * 2);
     const drop = isDrop(activeTrig), col = drop ? C.orange : C.yellow;
-    const label = P.textCanvas('[F] ' + (drop ? 'DELIVER' : String(activeTrig.label || '').toUpperCase().slice(0, 12)), col, { font: 3 });
+    const label = P.textCanvas('[' + N.actKey() + '] ' + (drop ? 'DELIVER' : String(activeTrig.label || '').toUpperCase().slice(0, 12)), col, { font: 3 });
     x.fillStyle = 'rgba(10,6,24,0.8)'; x.fillRect(sx - (label.width >> 1) - 3, sy - 3, label.width + 5, label.height + 5);
     x.fillStyle = col; x.fillRect(sx - (label.width >> 1) - 3, sy + label.height + 1, label.width + 5, 1);
     x.drawImage(label, sx - (label.width >> 1), sy);

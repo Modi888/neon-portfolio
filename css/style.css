@@ -217,7 +217,7 @@ mark.todo { background: rgba(255, 217, 59, .16); color: var(--yellow); padding: 
 .ov-bg { position: absolute; inset: 0; background: repeating-conic-gradient(rgba(7,3,26,.88) 0 25%, rgba(7,3,26,.6) 0 50%) 0 0 / 4px 4px; }
 .win {
   --bc: var(--accent, var(--cyan));
-  position: relative; display: flex; flex-direction: column; width: min(980px, 100%); max-height: min(88vh, 1100px); background: var(--night);
+  position: relative; display: flex; flex-direction: column; width: min(980px, 100%); max-height: min(88vh, 1100px); max-height: min(88dvh, 1100px); background: var(--night);
   box-shadow: 0 -4px 0 0 var(--bc), 0 4px 0 0 var(--bc), -4px 0 0 0 var(--bc), 4px 0 0 0 var(--bc), 12px 16px 0 0 rgba(0,0,0,.45);
   animation: winIn .2s steps(4);
 }
@@ -286,7 +286,7 @@ mark.todo { background: rgba(255, 217, 59, .16); color: var(--yellow); padding: 
 .sticky blockquote { margin: 0; font: 26px/1.35 var(--f-body); }
 .sticky figcaption { margin-top: 16px; text-align: right; font: var(--fs-small)/1.4 var(--f-body); color: #6a5520; }
 .zoombox { position: fixed; inset: 0; z-index: 150; display: grid; place-items: center; padding: 3vmin; background: rgba(4,2,14,.94); cursor: zoom-out; animation: ovIn .16s steps(3); }
-.zoombox img { max-width: 100%; max-height: 94vh; width: auto; height: auto; image-rendering: auto; box-shadow: 0 0 0 4px var(--ink), 0 0 0 8px var(--lav); }
+.zoombox img { max-width: 100%; max-height: 94vh; max-height: 94dvh; width: auto; height: auto; image-rendering: auto; box-shadow: 0 0 0 4px var(--ink), 0 0 0 8px var(--lav); }
 .zoombox-x { position: fixed; top: 16px; right: 16px; color: var(--white); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; cursor: pointer; background: var(--plum); box-shadow: 0 0 0 4px var(--lav); }
 .zoombox-x .ico { width: 22px; height: 22px; }
 .sec-img img { display: block; max-width: 100%; max-height: min(64vh, 520px); width: auto; height: auto; box-shadow: 0 0 0 4px var(--ink); }
@@ -626,7 +626,8 @@ input[type=range] { width: 200px; accent-color: var(--yellow); }
   :root { --fs-body: 18px; --fs-small: 16px; --fs-h2: 50px; --fs-h1: 80px; --fs-h3: 24px; }
   .win-body { padding: 24px 20px 28px; }
   .ov { padding: 10px; }
-  .win { max-height: 94vh; }
+  /* phones: dvh is the area actually visible between the browser's toolbars (vh includes the part they cover) */
+  .win { max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); }
   .stamp, .rating { display: none; }
   .win-foot .btn span { display: none; }
   .win-foot { padding: 10px 14px 14px; }
