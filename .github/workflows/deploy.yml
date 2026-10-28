@@ -1,0 +1,50 @@
+# Every push to main ships the site: zip the tracked files, deploy to Netlify,
+# then purge Cloudflare so eddiechen.ai and modichen.com serve the new version.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the upload
+        run: git archive --format=zip -o site.zip HEAD -- . ':!README.md' ':!.gitignore' ':!.github'
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          id=$(curl -sf -X POST "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys" \
+            -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" -H "Content-Type: application/zip" \
+            --data-binary @site.zip | jq -r .id)
+          echo "deploy $id"
+          for i in $(seq 1 30); do
+            state=$(curl -sf "https://api.netlify.com/api/v1/deploys/$id" -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" | jq -r .state)
+            echo "state: $state"
+            [ "$state" = ready ] && exit 0
+            [ "$state" = error ] && exit 1
+            sleep 5
+          done
+          exit 1
+
+      - name: Purge Cloudflare cache
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_IDS: ${{ secrets.CF_ZONE_IDS }}
+        run: |
+          for z in $CF_ZONE_IDS; do
+            curl -sf -X POST "https://api.cloudflare.com/client/v4/zones/$z/purge_cache" \
+              -H "Authorization: Bearer $CF_API_TOKEN" -H "Content-Type: application/json" \
+              --data '{"purge_everything":true}' | jq -c '{success, errors}'
+          done
