@@ -30,13 +30,17 @@
     const g = { score: 0, over: false, label: '' };
     let state = 'select', pick = 1, song = null, notes = [], health = 100, combo = 0, best = 0, hits = 0, perfects = 0, judged = 0, misses = 0;
     let fx = [], flash = [0, 0, 0, 0], judge = null, t0 = 0, endAt = 0, frame = 0;
-    const clock = () => (N.Audio.ready && song && N.Audio.music.current === song.id) ? N.Audio.music.position : (performance.now() - t0) / 1000 - LEAD;
+    // follow the song when audio is actually running; if the phone hasn't let sound start, fall back to the wall clock so notes still fall
+    let audioClock = false;
+    const clock = () => (audioClock && song && N.Audio.music.current === song.id) ? N.Audio.music.position : (performance.now() - t0) / 1000 - LEAD;
 
     function start() {
       song = SONGS[pick];
       notes = chart(song);
       endAt = notes[notes.length - 1].t + 1.4;
       t0 = performance.now();
+      N.Audio.init();
+      audioClock = N.Audio.running;
       N.Audio.forceMusic(true);
       N.Audio.music.play(song.id, { restart: true, delay: LEAD });
       state = 'play'; api.sfx('select');
@@ -153,7 +157,7 @@
         P.drawText(x, `${tr.bpm} BPM  ${s.label}`, 46, y + 26, on ? C.lilac : '#4a3a7a', { font: 3 });
         for (let k = 0; k < 3; k++) P.drawText(x, '★', W - 56 + k * 8, y + 14, k < s.diff ? C.yellow : '#3a2a6a', { font: 3 });
       });
-      P.drawText(x, '▲▼ CHOOSE   F START', W / 2, 186, C.grey, { font: 3, align: 'center' });
+      P.drawText(x, '▲▼ CHOOSE   ' + N.padA() + ' START', W / 2, 186, C.grey, { font: 3, align: 'center' });
       P.drawText(x, '← ↓ ↑ → HIT THE NOTES ON THE LINE', W / 2, 198, C.grey, { font: 3, align: 'center' });
     }
     g.destroy = () => {

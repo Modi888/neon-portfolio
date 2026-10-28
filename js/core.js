@@ -457,6 +457,9 @@
   // the action key is F on a keyboard and the B button on the touch pad; copy is written with F
   N.touch = () => !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
   N.actKey = () => N.touch() ? 'B' : 'F';
+  // in the arcade the main button is F on a keyboard and A on the touch pad
+  N.padA = () => N.touch() ? 'A' : 'F';
+  N.arcKeyify = (s) => typeof s === 'string' && N.touch() ? s.replace(/\bF\b/g, 'A') : s;
   N.keyify = (s) => typeof s === 'string' && N.touch() ? s.replace(/\b(Press|PRESS) F\b/g, '$1 B').replace(/按 F/g, '按 B').replace(/\[F\]/g, '[B]') : s;
   N.t = (k) => N.keyify(N.STR[N.lang] && N.STR[N.lang][k] != null ? N.STR[N.lang][k] : (N.STR.en[k] != null ? N.STR.en[k] : k));
 

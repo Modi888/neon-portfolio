@@ -19,8 +19,17 @@
     return ctx.createPeriodicWave(real, imag);
   }
 
+  // iOS only lets sound start inside a tap's touchend/click (the pads cancel those), and it can leave
+  // the context 'interrupted' rather than 'suspended'; a silent one-sample blip inside the gesture unlocks it
+  let unlocked = false;
+  function unlock() {
+    if (!ctx || document.hidden) return;
+    if (ctx.state !== 'running') ctx.resume();
+    if (!unlocked) { unlocked = true; const s = ctx.createBufferSource(); s.buffer = ctx.createBuffer(1, 1, 22050); s.connect(ctx.destination); s.start(0); }
+  }
+  ['touchend', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, () => { init(); unlock(); }, true));
   function init() {
-    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    if (ctx) { if (ctx.state !== 'running' && !document.hidden) ctx.resume(); return; }
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
     ctx = new AC();
@@ -284,6 +293,7 @@
   N.Audio = {
     init,
     get ready() { return !!ctx; },
+    get running() { return !!ctx && ctx.state === 'running'; },
     get context() { return ctx; },
     get output() { return master; },
     sfx(name) { if (!ctx || !S.sfx) return; const fn = SFX[name]; if (fn) fn(); },

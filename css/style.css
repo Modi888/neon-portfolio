@@ -703,8 +703,9 @@ input[type=range] { width: 200px; accent-color: var(--yellow); }
   .cab-dpad { display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(2, 52px); gap: 4px; }
   .cab-dpad [data-k="up"] { grid-column: 2; grid-row: 1; } .cab-dpad [data-k="left"] { grid-column: 1; grid-row: 2; } .cab-dpad [data-k="right"] { grid-column: 3; grid-row: 2; } .cab-dpad [data-k="down"] { grid-column: 2; grid-row: 2; }
   .cab-ab { display: flex; gap: 8px; align-items: flex-end; }
-  .cab-ab [data-k="a"] { background: var(--magentaD, #a3196b); } .cab-ab [data-k="b"] { background: #5a2ea6; margin-bottom: 20px; }
-  .cab-ab [data-k="start"] { width: 74px; height: 32px; font-size: 14px; }
+  /* same as the city pad: B low on the left, A raised on the right, both magenta */
+  .cab-ab [data-k="a"], .cab-ab [data-k="b"] { background: rgba(163,25,107,.85); }
+  .cab-ab [data-k="a"] { margin-bottom: 20px; }
   .cab-panel { display: none; }
   .arc-nav { display: none; }
   .cab-bezel canvas { height: auto; width: 100%; }
@@ -722,7 +723,6 @@ input[type=range] { width: 200px; accent-color: var(--yellow); }
 @media (hover: none) and (pointer: coarse) and (max-width: 400px) {
   .cab-touch button { width: 44px; height: 44px; font-size: 16px; }
   .cab-dpad { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 3px; }
-  .cab-ab [data-k="start"] { width: 58px; height: 28px; font-size: 12px; }
   .arc-name { font-size: 24px; }
   .arc-coins { font-size: 14px; }
 }
@@ -738,7 +738,7 @@ input[type=range] { width: 200px; accent-color: var(--yellow); }
   .cab-touch { position: absolute; inset: 0; margin: 0; padding: 0 10px; pointer-events: none; }
   .cab-touch > * { pointer-events: auto; }
   .cab-ab { flex-direction: column-reverse; align-items: center; }
-  .cab-ab [data-k="b"] { margin-bottom: 0; }
+  .cab-ab [data-k="a"] { margin-bottom: 0; }
 }
 
 /* ---------------- terminal ---------------- */

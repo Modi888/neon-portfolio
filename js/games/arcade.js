@@ -47,12 +47,12 @@
           <div class="cab-bezel"><canvas id="arcScreen" width="${W}" height="${H}" aria-label="${esc(g.name)}"></canvas></div>
           <div class="cab-panel">
             <div class="cab-stick" aria-hidden="true"><i></i></div>
-            <p class="cab-help" id="arcHelp">${esc(L(g.help))}</p>
+            <p class="cab-help" id="arcHelp">${esc(N.arcKeyify(L(g.help)))}</p>
             <div class="cab-btns" aria-hidden="true"><i></i><i></i></div>
           </div>
           <div class="cab-touch">
             <div class="cab-dpad"><button data-k="up" aria-label="Up">▲</button><button data-k="left" aria-label="Left">◀</button><button data-k="right" aria-label="Right">▶</button><button data-k="down" aria-label="Down">▼</button></div>
-            <div class="cab-ab"><button data-k="start" aria-label="Start">START</button><button data-k="b" aria-label="B">B</button><button data-k="a" aria-label="F">F</button></div>
+            <div class="cab-ab"><button data-k="b" aria-label="B">B</button><button data-k="a" aria-label="A">A</button></div>
           </div>
         </div>
         <button class="arc-nav" data-arc="next" aria-label="Next cabinet">${N.UI.ico('arrowR')}</button>
@@ -101,7 +101,7 @@
     const g = games[sel];
     root.querySelector('.arc').style.setProperty('--accent', N.colorOf(g.color));
     root.querySelector('#arcMarquee').textContent = g.name;
-    root.querySelector('#arcHelp').textContent = L(g.help);
+    root.querySelector('#arcHelp').textContent = N.arcKeyify(L(g.help));
     root.querySelectorAll('.arc-tab').forEach((b, i) => { b.classList.toggle('is-on', i === sel); b.setAttribute('aria-selected', i === sel); b.querySelector('span').textContent = `${t('arcade.hiscore')} ${scores(games[i])[0].s}`; });
     const c = root.querySelector('#arcCoins'); if (c) c.textContent = String(N.Store.data.coins).padStart(3, '0');
   }
@@ -239,7 +239,8 @@
       lines.slice(0, 6).forEach((ln, i) => text(ln.trim(), W / 2, 76 + i * 12, '#ffffff', { align: 'center', font: 3 }));
       if (N.lang === 'zh') text('SEE INSTRUCTIONS BELOW', W / 2, 160, C.grey, { align: 'center', font: 3 });
     }
-    if ((frame >> 5) % 2 === 0) text(N.Store.data.coins > 0 ? 'PRESS START  1 COIN' : 'PRESS START  FREE PLAY', W / 2, 176, C.yellow, { align: 'center' });
+    const go = N.touch() ? 'PRESS A' : 'PRESS START';
+    if ((frame >> 5) % 2 === 0) text(N.Store.data.coins > 0 ? go + '  1 COIN' : go + '  FREE PLAY', W / 2, 176, C.yellow, { align: 'center' });
     text('◀ ▶ CHANGE GAME', W / 2, 196, C.grey, { align: 'center', font: 3 });
     text(`CREDITS ${String(N.Store.data.coins).padStart(2, '0')}`, W - 6, H - 10, C.grey, { align: 'right', font: 3 });
     text('(C)2026 NEON-8', 6, H - 10, C.grey, { font: 3 });
@@ -276,8 +277,8 @@
       text(`${i + 1}. ${r.n}`, 72, y, mine ? C.yellow : '#ffffff', { mono: true });
       text(String(r.s), 184, y, mine ? C.yellow : '#ffffff', { mono: true, align: 'right' });
     });
-    if (frame > 50 && (frame >> 5) % 2 === 0) text('PRESS START TO PLAY AGAIN', W / 2, 176, C.yellow, { align: 'center', font: 3 });
-    text('ESC TO LEAVE', W / 2, 192, C.grey, { align: 'center', font: 3 });
+    if (frame > 50 && (frame >> 5) % 2 === 0) text((N.touch() ? 'PRESS A' : 'PRESS START') + ' TO PLAY AGAIN', W / 2, 176, C.yellow, { align: 'center', font: 3 });
+    if (!N.touch()) text('ESC TO LEAVE', W / 2, 192, C.grey, { align: 'center', font: 3 });
   }
   function draw() {
     if (state === 'attract') { drawAttract(); return; }

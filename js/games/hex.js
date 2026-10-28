@@ -69,7 +69,7 @@
         P.drawText(x, hex(mine), 188, 98, '#ffffff', { align: 'center' });
         P.drawText(x, result.word, W / 2, 124, result.d < 8 ? C.lime : result.d < 20 ? C.yellow : C.red, { align: 'center', scale: result.word.length > 10 ? 1 : 2 });
         P.drawText(x, `DELTA E ${result.d.toFixed(1)}   +${result.pts}`, W / 2, 148, C.lilac, { align: 'center' });
-        P.drawText(x, round + 1 >= ROUNDS ? 'PRESS F FOR RESULTS' : 'PRESS F FOR NEXT ROUND', W / 2, 176, (frame >> 4) % 2 ? C.yellow : C.grey, { font: 3, align: 'center' });
+        P.drawText(x, 'PRESS ' + N.padA() + (round + 1 >= ROUNDS ? ' FOR RESULTS' : ' FOR NEXT ROUND'), W / 2, 176, (frame >> 4) % 2 ? C.yellow : C.grey, { font: 3, align: 'center' });
         return;
       }
       ['R', 'G', 'B'].forEach((name, i) => {

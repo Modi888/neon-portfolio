@@ -147,6 +147,8 @@
   /* ---------------- speech bubbles ---------------- */
   const bubbles = new Map();
   function say(line, who) {
+    // BYTE waits for a district banner to clear instead of talking over it
+    if (who === 'byte' && Date.now() < bannerUntil) { const w = bannerUntil - Date.now(); setTimeout(() => say(line, who), w); return; }
     // a line can carry a touch: { en, zh } version for the phone pad (no Space, Shift or M there)
     if (line && line.touch && N.touch()) line = line.touch;
     const text = N.keyify(L(line));
@@ -199,7 +201,7 @@
   function hideBubbles() { bubbles.forEach(b => b.node.classList.remove('on')); }
 
   /* ---------------- banner ---------------- */
-  let bannerT = 0;
+  let bannerT = 0, bannerUntil = 0;
   function banner(d, colorKey) {
     const bn = $('#banner'); if (!bn) return;
     const col = N.colorOf(colorKey || d.color);
@@ -207,6 +209,7 @@
     bn.innerHTML = `<span class="bn-world">WORLD ${esc(d.world)}</span><span class="bn-name">${esc(L(d.name))}</span>${d.sub ? `<span class="bn-sub">${esc(d.sub)}</span>` : ''}`;
     bn.classList.remove('on'); void bn.offsetWidth; bn.classList.add('on');
     clearTimeout(bannerT); bannerT = setTimeout(() => bn.classList.remove('on'), 2600);
+    bannerUntil = Date.now() + 2600 + 300; // shown, then faded out
     announce(`${t('district.enter')} ${L(d.name)}`);
   }
 

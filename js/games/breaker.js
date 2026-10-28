@@ -117,7 +117,7 @@
         P.drawText(x, c.kind, c.x + 5, c.y + 1, '#ffffff', { font: 3 });
       }
       parts.forEach(p => { x.fillStyle = p.c; x.fillRect(p.x | 0, p.y | 0, 2, 2); });
-      if (stuck) P.drawText(x, msg > 0 ? 'LEVEL ' + (level + 1) : 'PRESS F TO LAUNCH', W / 2, H / 2 + 20, C.yellow, { align: 'center', font: msg > 0 ? 5 : 3 });
+      if (stuck) P.drawText(x, msg > 0 ? 'LEVEL ' + (level + 1) : 'PRESS ' + N.padA() + ' TO LAUNCH', W / 2, H / 2 + 20, C.yellow, { align: 'center', font: msg > 0 ? 5 : 3 });
       if (wide > 0) P.drawText(x, 'COFFEE!', 4, H - 7, C.orange, { font: 3 });
       if (slow > 0) P.drawText(x, 'SLOW-MO', W - 4, H - 7, C.blue, { font: 3, align: 'right' });
     };
