@@ -32,6 +32,9 @@
     if (ctx) { if (ctx.state !== 'running' && !document.hidden) ctx.resume(); return; }
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
+    // iPhones route Web Audio through the "ambient" channel, which the ring/silent switch mutes;
+    // ask for "playback" the way a game does, so sound plays like a video would (Safari 16.4+)
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
     ctx = new AC();
     comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -14; comp.ratio.value = 4;
